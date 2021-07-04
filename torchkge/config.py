@@ -22,7 +22,7 @@ _config = None
 def config():
     global _config
     if _config is None:
-        config_path = 'config.yaml'
+        config_path = 'torchkge/torchkge/config.yaml'
         for arg in sys.argv[1:]:
             if arg.startswith('--config='):
                 config_path = arg[9:]
