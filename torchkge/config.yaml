@@ -3,7 +3,7 @@ g_config: DistMult
 d_config: TransE
 test_batch_size: 100
 task:
-  dir: data\wn18rr
+  dir: torchkge\data\wn18rr
   type: link
 adv:
   n_sample: 20
