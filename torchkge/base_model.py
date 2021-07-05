@@ -121,16 +121,20 @@ class BaseModel(object):
                     if tails[(s.item(), r.item())]._nnz() > 1:
                         tmp = dst_scores[t]
                         if torch.cuda.is_available():
-                            dst_scores += tails[(s.item(), r.item())].data.cuda() * 1e30
+                            # dst_scores += tails[(s.item(), r.item())].data.cuda() * 1e30
+                            dst_scores = dst_scores + tails[(s.item(), r.item())].data.cuda() * 1e30
                         else:
-                            dst_scores += tails[(s.item(), r.item())].data * 1e30
+                            # dst_scores += tails[(s.item(), r.item())].data * 1e30
+                            dst_scores = dst_scores + tails[(s.item(), r.item())].data * 1e30
                         dst_scores[t] = tmp
                     if heads[(t.item(), r.item())]._nnz() > 1:
                         tmp = src_scores[s]
                         if torch.cuda.is_available():
-                            src_scores += heads[(t.item(), r.item())].data.cuda() * 1e30
+                            # src_scores += heads[(t.item(), r.item())].data.cuda() * 1e30
+                            src_scores = src_scores + heads[(t.item(), r.item())].data.cuda() * 1e30
                         else:
-                            src_scores += heads[(t.item(), r.item())].data * 1e30
+                            # src_scores += heads[(t.item(), r.item())].data * 1e30
+                            src_scores = src_scores + heads[(t.item(), r.item())].data * 1e30
                         src_scores[s] = tmp
                 mrr, mr, hit10 = mrr_mr_hitk(dst_scores, t)
                 mrr_tot += mrr
@@ -141,6 +145,5 @@ class BaseModel(object):
                 mr_tot += mr
                 hit10_tot += hit10
                 count += 2
-            # varrr = 10
         logging.info('Test_MRR=%f, Test_MR=%f, Test_H@10=%f', mrr_tot / count, mr_tot / count, hit10_tot / count)
         return mrr_tot / count
